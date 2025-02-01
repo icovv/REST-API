@@ -7,7 +7,7 @@ start();
 
 async function start() {
     const app = express();
-    await configDatabase();
+    await configDB();
     configExpress(app);
     configRoutes(app);
     app.listen(3000, () => {console.log('Server started http://localhost:3000')})

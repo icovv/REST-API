@@ -5,4 +5,4 @@ function configRoutes(app){
     
 }
 
-module.exports(configRoutes);
+module.exports = {configRoutes};
