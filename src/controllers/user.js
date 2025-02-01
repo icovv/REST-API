@@ -3,6 +3,7 @@ const {body,validationResult} = require('express-validator');
 const { login, register } = require('../services/userService');
 const { createToken } = require('../services/jwt');
 const { parseError } = require('../utils/errorParser');
+const { isGuest, isUser } = require('../midlewares/guards');
 
 const userRouter = Router();
 
@@ -27,7 +28,7 @@ userRouter.post('/login',
     }
 
 })
-userRouter.post('/register',
+userRouter.post('/register', isGuest(),
     body('email').trim().isEmail().withMessage('Please enter valid email!'),
     body('password').trim().isLength({min:6}).withMessage('Password must be at least 4 characters long!'),
     body('name').trim().isString().isLength({min:1}).withMessage('Please enter valid name!'),
@@ -54,8 +55,9 @@ userRouter.post('/register',
             res.json({code: 403, message: Object.values(parserd.errors)})
         }
 })
-userRouter.get('/logout', async(req,res) => {
-    
+userRouter.get('/logout',isUser(), async(req,res) => {
+    res.status(200);
+    res.json({code:200, message:"You have successfully logged out!"})
 })
 
 module.exports ={userRouter}
