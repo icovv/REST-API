@@ -43,3 +43,5 @@ async function login(email, password) {
 
     return user;
 }
+
+module.exports = {login, register};
