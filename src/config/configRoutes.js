@@ -11,7 +11,7 @@ function configRoutes(app){
     app.use('/bedroom',bedroomRouter);
     app.use('/decor',decorRouter);
     // app.use('/admin', adminRouter);
-    // app.use('/user', userRouter)
+    app.use('/user', userRouter)
 }
 
 module.exports = {configRoutes};
