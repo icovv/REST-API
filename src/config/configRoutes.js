@@ -1,17 +1,13 @@
 const {adminRouter} = require('../controllers/adminData');
-const {diningRouter} = require('../controllers/diningRoom');
-const {bedroomRouter} = require('../controllers/bedroom');
-const {decorRouter} = require('../controllers/decor');
 const {userRouter} = require('../controllers/user');
+const {dataRouter} = require('../controllers/data')
 
 
 
 function configRoutes(app){
-    app.use('/dining-room',diningRouter);
-    app.use('/bedroom',bedroomRouter);
-    app.use('/decor',decorRouter);
+    app.use(dataRouter);
     // app.use('/admin', adminRouter);
-    app.use('/user', userRouter)
+    app.use(userRouter)
 }
 
 module.exports = {configRoutes};
