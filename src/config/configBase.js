@@ -4,7 +4,7 @@ require('../models/user')
 async function configDB() {
     await mongoose.connect("mongodb://127.0.0.1/database")
     .then(async () => {
-        let existing = await User.findOne({'email':"admin@user.abv"})
+        let existing = await User.findOne({'email':"admin@admin.admin"})
         if (!existing){
         let adminUser = new User({
             email: "admin@admin.admin",
