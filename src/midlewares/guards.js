@@ -20,4 +20,15 @@ function isGuest(){
     }
 }
 
-module.exports = {isGuest,isUser}
+function isAdmin(){
+    return function(req,res,next){
+        if(!(req.user.email === 'admin@admin.admin')){
+            res.status(403);
+            res.json({code:403,message:"You have to be an admin in order to do this!"})
+        } else {
+            next();
+        }
+    }
+}
+
+module.exports = {isGuest,isUser, isAdmin}

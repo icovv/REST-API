@@ -17,6 +17,11 @@ userRouter.post('/login',
         res.json({
             _id: result._id,
             email: result.email,
+            name:result.name,
+            town: result.town,
+            streetName: result.streetName,
+            streetNumber: result.streetNumber,
+            tel: "0" + result.tel,
             accessToken
         })
     } catch (error) {
@@ -47,8 +52,16 @@ userRouter.post('/register', isGuest(),
             }
             const result = await register(email,password,name,town,streetName,streetNumber,tel);
             let accessToken = createToken({email:result.email,_id:result._id});
-            result.accessToken = accessToken;
-            res.json(result)
+            res.json({
+                _id: result._id,
+                email: result.email,
+                name:result.name,
+                town: result.town,
+                streetName: result.streetName,
+                streetNumber: result.streetNumber,
+                tel: "0" + result.tel,
+                accessToken
+            })
         } catch (error) {
             const parserd = parseError(error);
             res.status(403);

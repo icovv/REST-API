@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const {User} = require('../models/user')
+const bcrypt = require('bcrypt')
 require('../models/user');
 require('../models/bedroom')
 async function configDB() {
@@ -9,7 +10,7 @@ async function configDB() {
         if (!existing){
         let adminUser = new User({
             email: "admin@admin.admin",
-            password: "123456",
+            password: await bcrypt.hash("123456",10),
             name:"Admin",
             town: "Admin",
             streetName:"Admin",
