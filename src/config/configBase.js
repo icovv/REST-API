@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const {User} = require('../models/user')
-require('../models/user')
+require('../models/user');
+require('../models/bedroom')
 async function configDB() {
     await mongoose.connect("mongodb://127.0.0.1/database")
     .then(async () => {

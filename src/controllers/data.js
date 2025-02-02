@@ -2,8 +2,8 @@ const {Router} = require('express')
 
 const dataRouter = Router();
 
-dataRouter.get('/data', async(req,res) => {
-    res.json([]);
+dataRouter.get('/bedroom/:id', async(req,res) => {
+    
 })
 dataRouter.get('/', async(req,res) => {
     res.json({});
