@@ -70,7 +70,7 @@ userRouter.post('/register', isGuest(),
 })
 userRouter.get('/logout',isUser(), async(req,res) => {
     res.status(200);
-    res.json({code:200, message:"You have successfully logged out!"})
+    res.json({code:200, message:["You have successfully logged out!"]})
 })
 
 module.exports ={userRouter}

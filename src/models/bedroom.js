@@ -17,14 +17,19 @@ const bedroomSchema = new Schema({
         type: String,
         required:true
     },
-    pictures: {
+    picture: {
         type: Buffer,
         required:true
     },
-    createdOn:{
-        type:Date,
-        required:true
+    contentType: {
+        type: String,
+        required: true
     }
+    // ,
+    // createdOn:{
+    //     type:Date,
+    //     required:true
+    // }
 })
 
 const Bedroom = model('Bedroom', bedroomSchema);
