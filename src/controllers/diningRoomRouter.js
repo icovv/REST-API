@@ -28,3 +28,25 @@ diningRoomRouter.get('/dining-room', async(req,res) => {
         res.status(500).json({ code: 500, message: ['Error fetching Dining room items!']});
     }
 })
+
+bedroomRouter.get('/dining-room/:id', async(req,res) => {
+    const {id } = req.params;
+
+    try {
+        const item = await DiningRoom.findById(id).lean();
+        if(!item){
+            return res.status(400).json({code: 400, message:["Dining room item not found!"]});
+        }
+        res.status(200).res.json({
+            itemId: item._id,
+            picture: item.picture.toString('base64'),
+            col: item.col,
+            tittle: item.tittle,
+            price: item.price,
+            description: item.description,
+            characteristics: item.characteristics,
+            contentType: item.contentType});
+    } catch (error) {
+        res.status(500).json({ code: 500, message: ['Error fetching Dining room item!']});
+    }
+})
