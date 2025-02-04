@@ -5,6 +5,7 @@ function parseError(err) {
             err.errors = [err.message];
         } else {
             // TODO parse Mongoose validation error
+            console.log('tuk sym    ')
             const errror = new Error('Input validation error');
             errror.errors = Object.fromEntries(Object.values(err.errors.map(e => [e.path, e.msg])))
 
