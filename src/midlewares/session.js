@@ -11,7 +11,6 @@ function session(){
                     email: sessionData.email,
                     _id: sessionData._id
                 };
-                console.log(req.user.email);
                 res.locals.hasUser = true;
                 // req.locals.isAdmin = req.user.email === "admin@admin.admin" ? true : false;
             } catch (error) {

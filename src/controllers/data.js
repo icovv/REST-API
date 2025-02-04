@@ -3,9 +3,11 @@ const {isAdmin, isUser} = require('../midlewares/guards')
 const dataRouter = Router();
 const multer = require('multer')
 const {Bedroom} = require('../models/bedroom')
-
+const {body,validationResult} = require('express-validator');
+const {fileFilter} = require('../midlewares/fileFilter')
 const storage = multer.memoryStorage();
-const upload = multer({storage:storage})
+const upload = multer({storage:storage});
+
 
 // dataRouter.get('/bedroom/:id', async(req,res) => {
 //     const {id } = req.params;
@@ -47,7 +49,12 @@ dataRouter.get('/bedroom/:id', async(req,res) => {
         res.status(500).send({ code: 500, message: 'Error fetching bedroom item!'});
     }
 })
-dataRouter.post('/admin/bedroom',isUser(),isAdmin(),upload.single('image'), async(req,res) => {
+dataRouter.post('/admin/bedroom',
+    isUser(),
+    isAdmin(),
+    upload.single('image'),
+    fileFilter(),
+    async(req,res) => {
     const {tittle,price,description,characteristics} = req.body;
     const {originalName, buffer, mimetype} = req.file;
 
@@ -64,8 +71,7 @@ dataRouter.post('/admin/bedroom',isUser(),isAdmin(),upload.single('image'), asyn
         await item.save();
         res.status(200).json({ code: 200, message: 'Bedroom item uploaded successfully!', imageId: item._id });
       } catch (error) {
-        console.error('Error uploading image:', error);
-        res.status(500).send({ code: 500, message: 'Error uploading bedroom item!'});
+        res.status(500).json({ code: 500, message: 'Error uploading bedroom item!'});
       }
 
 })
@@ -84,7 +90,12 @@ dataRouter.delete('/admin/bedroom/:id',isUser(),isAdmin(), async(req,res) => {
       res.status(500).json({code:500, message: 'Error deleting bedroom item!' });
     }
 })
-dataRouter.put('/admin/bedroom/:id',isUser(),isAdmin(),upload.single('image'), async(req,res) => {
+dataRouter.put('/admin/bedroom/:id',
+    isUser(),
+    isAdmin(),
+    upload.single('image'),
+    fileFilter(),
+    async(req,res) => {
     let {id} = req.params;
     const {tittle,price,description,characteristics} = req.body;
     const {originalName, buffer, mimetype} = req.file;
@@ -106,7 +117,7 @@ dataRouter.put('/admin/bedroom/:id',isUser(),isAdmin(),upload.single('image'), a
             res.status(404).json({code:404, message:"Bedroom item not found!"})
         }
 
-        res.status(200).send({
+        res.status(200).json({
             code: 200,
             message: 'Bedroom item changed successfully',
             itemId: item._id,
@@ -118,7 +129,7 @@ dataRouter.put('/admin/bedroom/:id',isUser(),isAdmin(),upload.single('image'), a
             contentType: item.contentType});
       } catch (error) {
         console.error('Error changing image:', error);
-        res.status(500).send({ code: 500, message: 'Error changing Bedroom item'});
+        res.status(500).json({ code: 500, message: 'Error changing Bedroom item'});
       }
 
 })
