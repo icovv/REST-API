@@ -90,18 +90,31 @@ dataRouter.put('/admin/bedroom/:id',isUser(),isAdmin(),upload.single('image'), a
     const {originalName, buffer, mimetype} = req.file;
 
     try {
-        let image = await Bedroom.findById(id);
+        let image = await Bedroom.findByIdAndUpdate(
+            id,
+            {
+                tittle:tittle,
+                price: price,
+                description: description,
+                characteristics: characteristics,
+                picture: buffer,
+                contentType: mimetype
+            },
+            {new: true}
+        );
         if(!image){
             res.status(404).json({code:404, message:"Bedroom item not found!"})
         }
-        image.tittle = tittle;
-        image.price = price;
-        image.description = description;
-        image.characteristics = characteristics;
-        image.picture = buffer;
-        image.contentType = mimetype;
 
-        res.status(200).json({ code: 200, message: 'Bedroom item changed successfully', imageId: image._id });
+        res.status(200).send({
+            code: 200,
+            message: 'Bedroom item changed successfully',
+            image: image.picture.toString('base64'),
+            tittle: image.tittle,
+            price: image.price,
+            description: image.description,
+            characteristics: image.characteristics,
+            contentType: image.contentType});
       } catch (error) {
         console.error('Error changing image:', error);
         res.status(500).send({ code: 500, message: 'Error changing Bedroom item'});
