@@ -1,11 +1,13 @@
 const {Router} = require('express')
 const {isAdmin, isUser} = require('../midlewares/guards')
-const bedroomRouter = Router();
 const multer = require('multer')
 const {Bedroom} = require('../models/bedroom')
 const {body,validationResult} = require('express-validator');
 const {fileFilter} = require('../midlewares/fileFilter')
 const {parseError} = require('../utils/errorParser')
+
+const bedroomRouter = Router();
+
 const storage = multer.memoryStorage();
 const upload = multer({storage:storage});
 
