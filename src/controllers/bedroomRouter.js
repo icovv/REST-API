@@ -12,26 +12,21 @@ const storage = multer.memoryStorage();
 const upload = multer({storage:storage});
 
 
-// dataRouter.get('/bedroom/:id', async(req,res) => {
-//     const {id } = req.params;
 
-//     try {
-//         const image = await Bedroom.findById(id);
-//         if(!image){
-//             return res.status(400).send("image not found");
-//         }
-//         res.send({
-//             image: image.picture.toString('base64'),
-//             tittle: image.tittle,
-//             price: image.price,
-//             description: image.description,
-//             characteristics: image.characteristics,
-//             contentType: image.contentType});
-//     } catch (error) {
-//         console.error('Error fetching image:', error);
-//         res.status(500).send('Error fetching image');
-//     }
-// })
+bedroomRouter.get('/bedroom/:col', async(req,res) => {
+    const {col} = req.params;
+    try {
+        const items = await Bedroom.find({col:col}).lean();
+        if(!items){
+            return res.status(400).json({code: 400, message:["No Bedroom items were found in this collection!"]});
+        }
+        items.picture = items.picture.toString('base64');
+        res.status(200).res.json({code: 200, items});
+    } catch (error) {
+        res.status(500).json({ code: 500, message: ['Error fetching bedroom items!']});
+    }
+})
+
 bedroomRouter.get('/bedroom/:id', async(req,res) => {
     const {id } = req.params;
 
@@ -43,6 +38,7 @@ bedroomRouter.get('/bedroom/:id', async(req,res) => {
         res.status(200).res.json({
             itemId: item._id,
             picture: item.picture.toString('base64'),
+            col: item.col,
             tittle: item.tittle,
             price: item.price,
             description: item.description,
@@ -60,13 +56,15 @@ bedroomRouter.post('/admin/bedroom',
     body('tittle').trim().isString().withMessage('Please enter valid tittle!').notEmpty().withMessage('Please enter valid tittle!'),
     body('characteristics').trim().isString().withMessage('Please enter valid characteristics!').notEmpty().withMessage('Please enter valid characteristics!'),
     body('description').trim().isString().withMessage('Please enter valid characteristics!').notEmpty().withMessage('Please enter valid characteristics!'),
-    body('price').trim().isNumeric().withMessage("Please enter valid price").notEmpty().withMessage("Please enter valid price"),
+    body('price').trim().isNumeric().withMessage("Please enter valid price!").notEmpty().withMessage("Please enter valid price!"),
+    body('col').trim().isString().withMessage("Please enter valid collection name!").notEmpty().withMessage("Please enter valid price!"),
     async(req,res) => {
-    const {tittle,price,description,characteristics} = req.body;
+    const {tittle,price,description,characteristics,col} = req.body;
     const {originalName, buffer, mimetype} = req.file;
 
     let item = new Bedroom({
         tittle,
+        col,
         price,
         description,
         characteristics,
@@ -110,7 +108,7 @@ bedroomRouter.put('/admin/bedroom/:id',
     fileFilter(),
     async(req,res) => {
     let {id} = req.params;
-    const {tittle,price,description,characteristics} = req.body;
+    const {tittle,price,description,characteristics,col} = req.body;
     const {originalName, buffer, mimetype} = req.file;
 
     try {
@@ -118,6 +116,7 @@ bedroomRouter.put('/admin/bedroom/:id',
             id,
             {
                 tittle:tittle,
+                col:col,
                 price: price,
                 description: description,
                 characteristics: characteristics,
@@ -134,6 +133,7 @@ bedroomRouter.put('/admin/bedroom/:id',
             code: 200,
             message: ['Bedroom item changed successfully'],
             itemId: item._id,
+            col: item.col,
             picture: item.picture.toString('base64'),
             tittle: item.tittle,
             price: item.price,
