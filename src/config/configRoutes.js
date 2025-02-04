@@ -1,10 +1,10 @@
-const {userRouter} = require('../controllers/user');
-const {dataRouter} = require('../controllers/data')
+const {userRouter} = require('../controllers/userRouter');
+const {bedroomRouter} = require('../controllers/bedroomRouter')
 
 
 
 function configRoutes(app){
-    app.use(dataRouter);
+    app.use(bedroomRouter);
     app.use(userRouter)
 }
 

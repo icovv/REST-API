@@ -1,6 +1,6 @@
 const {Router} = require('express')
 const {isAdmin, isUser} = require('../midlewares/guards')
-const dataRouter = Router();
+const bedroomRouter = Router();
 const multer = require('multer')
 const {Bedroom} = require('../models/bedroom')
 const {body,validationResult} = require('express-validator');
@@ -30,7 +30,7 @@ const upload = multer({storage:storage});
 //         res.status(500).send('Error fetching image');
 //     }
 // })
-dataRouter.get('/bedroom/:id', async(req,res) => {
+bedroomRouter.get('/bedroom/:id', async(req,res) => {
     const {id } = req.params;
 
     try {
@@ -50,7 +50,7 @@ dataRouter.get('/bedroom/:id', async(req,res) => {
         res.status(500).json({ code: 500, message: ['Error fetching bedroom item!']});
     }
 })
-dataRouter.post('/admin/bedroom',
+bedroomRouter.post('/admin/bedroom',
     isUser(),
     isAdmin(),
     upload.single('image'),
@@ -87,7 +87,7 @@ dataRouter.post('/admin/bedroom',
 
 })
 
-dataRouter.delete('/admin/bedroom/:id',isUser(),isAdmin(), async(req,res) => {
+bedroomRouter.delete('/admin/bedroom/:id',isUser(),isAdmin(), async(req,res) => {
     let {id} = req.params;
 
     try {
@@ -101,7 +101,7 @@ dataRouter.delete('/admin/bedroom/:id',isUser(),isAdmin(), async(req,res) => {
       res.status(500).json({code:500, message: ['Error deleting bedroom item!'] });
     }
 })
-dataRouter.put('/admin/bedroom/:id',
+bedroomRouter.put('/admin/bedroom/:id',
     isUser(),
     isAdmin(),
     upload.single('image'),
@@ -145,4 +145,4 @@ dataRouter.put('/admin/bedroom/:id',
 
 })
 
-module.exports = {dataRouter}
+module.exports = {bedroomRouter}
