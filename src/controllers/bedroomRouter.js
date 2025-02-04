@@ -13,15 +13,17 @@ const upload = multer({storage:storage});
 
 
 
-bedroomRouter.get('/bedroom/:col', async(req,res) => {
-    const {col} = req.params;
+bedroomRouter.get('/bedroom', async(req,res) => {
     try {
-        const items = await Bedroom.find({col:col}).lean();
-        if(!items){
-            return res.status(400).json({code: 400, message:["No Bedroom items were found in this collection!"]});
+        const items = await Bedroom.find().lean();
+        console.log(items, "tuk");
+        if(items.length < 1){
+            return res.status(400).json({code: 400, message:["No Bedroom items were found!"]});
         }
-        items.picture = items.picture.toString('base64');
-        res.status(200).res.json({code: 200, items});
+        if(items.length > 0){
+        items.forEach((el) => el.picture.toString("base64"))
+        }
+        res.status(200).json({code: 200, items: items});
     } catch (error) {
         res.status(500).json({ code: 500, message: ['Error fetching bedroom items!']});
     }
@@ -31,7 +33,7 @@ bedroomRouter.get('/bedroom/:id', async(req,res) => {
     const {id } = req.params;
 
     try {
-        const item = await Bedroom.findById(id);
+        const item = await Bedroom.findById(id).lean();
         if(!item){
             return res.status(400).json({code: 400, message:["Bedroom item not found!"]});
         }
@@ -75,7 +77,6 @@ bedroomRouter.post('/admin/bedroom',
     try {
         const isResultValid = validationResult(req);
             if (isResultValid.errors.length){
-                console.log(isResultValid.errors)
                 throw isResultValid.errors
             }
         await item.save();
@@ -91,13 +92,12 @@ bedroomRouter.delete('/admin/bedroom/:id',isUser(),isAdmin(), async(req,res) => 
     let {id} = req.params;
 
     try {
-        const item = await Bedroom.findByIdAndDelete(id);
+        const item = await Bedroom.findByIdAndDelete(id).lean();
         if(!item) {
             res.status(404).json({code:404, message:["Bedroom item not found!"]})
         }
         res.status(200).json({code:200, message: ['Bedroom item deleted successfully!'] });
     } catch (error) {
-      console.error('Error deleting image:', error);
       res.status(500).json({code:500, message: ['Error deleting bedroom item!'] });
     }
 })
@@ -124,7 +124,7 @@ bedroomRouter.put('/admin/bedroom/:id',
                 contentType: mimetype
             },
             {new: true}
-        );
+        ).lean();
         if(!item){
             res.status(404).json({code:404, message:["Bedroom item not found!"]})
         }
@@ -141,7 +141,6 @@ bedroomRouter.put('/admin/bedroom/:id',
             characteristics: item.characteristics,
             contentType: item.contentType});
       } catch (error) {
-        console.error('Error changing image:', error);
         res.status(500).json({ code: 500, message: ['Error changing Bedroom item']});
       }
 
