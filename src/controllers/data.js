@@ -38,7 +38,8 @@ dataRouter.get('/bedroom/:id', async(req,res) => {
         if(!item){
             return res.status(400).json({code: 400, message:["Bedroom item not found!"]});
         }
-        res.send({
+        res.status(200).res.json({
+            itemId: item._id,
             picture: item.picture.toString('base64'),
             tittle: item.tittle,
             price: item.price,
@@ -78,7 +79,7 @@ dataRouter.post('/admin/bedroom',
                 throw isResultValid.errors
             }
         await item.save();
-        res.status(200).json({ code: 200, message: ['Bedroom item uploaded successfully!'], imageId: item._id });
+        res.status(200).json({ code: 200, message: ['Bedroom item uploaded successfully!'], itemId: item._id });
       } catch (error) {
         let parsedErr = parseError(error)
         res.status(500).json({ code: 500, message: Object.values(parsedErr.errors)});
