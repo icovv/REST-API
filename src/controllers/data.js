@@ -36,7 +36,7 @@ dataRouter.get('/bedroom/:id', async(req,res) => {
             return res.status(400).send("Bedroom item not found!");
         }
         res.send({
-            image: image.picture.toString('base64'),
+            picture: image.picture.toString('base64'),
             tittle: image.tittle,
             price: image.price,
             description: image.description,
@@ -109,7 +109,7 @@ dataRouter.put('/admin/bedroom/:id',isUser(),isAdmin(),upload.single('image'), a
         res.status(200).send({
             code: 200,
             message: 'Bedroom item changed successfully',
-            image: image.picture.toString('base64'),
+            picture: image.picture.toString('base64'),
             tittle: image.tittle,
             price: image.price,
             description: image.description,
