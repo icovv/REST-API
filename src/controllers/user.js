@@ -45,7 +45,6 @@ userRouter.post('/register', isGuest(),
     async(req,res) => {
         const {email,password,name,town,streetName,streetNumber,tel} = req.body
         try {
-            console.log(req.body);
             const isResultValid = validationResult(req);
             if (isResultValid.errors.length){
                 throw isResultValid.errors
