@@ -5,6 +5,10 @@ const diningRoomSchema = new Schema({
         type:String,
         required:true,
     },
+    col: {
+        type: String,
+        required: true
+    },
     price: {
         type: Number,
         required: true,
@@ -32,5 +36,5 @@ const diningRoomSchema = new Schema({
     // }
 })
 
-const diningRoom = model('diningRoom', diningRoomSchema);
-module.exports = {diningRoom}
+const DiningRoom = model('DiningRoom', diningRoomSchema);
+module.exports = {DiningRoom}
