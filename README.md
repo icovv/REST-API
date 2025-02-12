@@ -28,7 +28,7 @@ password: 123456 <br>
   -> Create an account in the platform. For registration you need the following: email, name, town, streetName, streetNumber and tel. Response returns object with _id, email, name, town, streetName, streetNumber, tel, accessToken, otherwise you will receive object with message(array with messages/texts) and code(status code). <br>
 * GET http://localhost:3000/logout <br>
   -> Logout of your account. You will receive object with message(array with messages/texts) and code(status code). <br>
-**PRODUCT ENDPOINTS** <br>
+<br> **PRODUCT ENDPOINTS** <br>
 * GET http://localhost:3000/bedroom / http://localhost:3000/decor / http://localhost:3000/dining-room <br>
   -> Get all products which are in one of the three categories (based on your choice). On successful response you will receive the items as objects in an array. Schema will be below for reference. If the request is unsuccessfull you will receive object with message(array with messages/texts) and code(status code). <br>
 * GET http://localhost:3000/bedroom/:id / http://localhost:3000/decor/:id / http://localhost:3000/dining-room/:id <br>
@@ -45,7 +45,7 @@ password: 123456 <br>
 # Schema
 **USER SCHEMA**  <br>
 * email: string, password: string, name: string, town: string, streetName: string, streetNumber: string, tel: number <br>
-**PRODUCTS SCHEMA** <br>
+<br> **PRODUCTS SCHEMA** <br>
 * tittle: string, col: string, price: number, description: string, characteristics: string, picture: buffer, contentType: string (mimetype of the picture).  <br>
 
 
