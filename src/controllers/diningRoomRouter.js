@@ -29,7 +29,7 @@ diningRoomRouter.get('/dining-room', async(req,res) => {
     }
 })
 
-bedroomRouter.get('/dining-room/:id', async(req,res) => {
+diningRoomRouter.get('/dining-room/:id', async(req,res) => {
     const {id } = req.params;
 
     try {
@@ -51,7 +51,7 @@ bedroomRouter.get('/dining-room/:id', async(req,res) => {
     }
 })
 
-bedroomRouter.post('/admin/dining-room',
+diningRoomRouter.post('/admin/dining-room',
     isUser(),
     isAdmin(),
     upload.single('image'),
@@ -89,7 +89,7 @@ bedroomRouter.post('/admin/dining-room',
 
 })
 
-bedroomRouter.delete('/admin/dining-room/:id',isUser(),isAdmin(), async(req,res) => {
+diningRoomRouter.delete('/admin/dining-room/:id',isUser(),isAdmin(), async(req,res) => {
     let {id} = req.params;
 
     try {
@@ -102,7 +102,7 @@ bedroomRouter.delete('/admin/dining-room/:id',isUser(),isAdmin(), async(req,res)
       res.status(500).json({code:500, message: ['Error deleting Dining room item!'] });
     }
 })
-bedroomRouter.put('/admin/dining-room/:id',
+diningRoomRouter.put('/admin/dining-room/:id',
     isUser(),
     isAdmin(),
     upload.single('image'),
