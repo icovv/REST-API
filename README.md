@@ -20,7 +20,7 @@ password: 123456 <br>
 * Mongoose: ODM (Object Data Modeling) library for MongoDB and Node.js.
 * MongoDB: NoSQL database to store data for the store.
 
-#Endpoints
+# Endpoints
 **USER SERVICES** <br>
 * POST http://localhost:3000/login <br>
   -> Log into your account. Successfull response returns object with _id, email, name, town, streetName, streetNumber, tel, accessToken, otherwise you will receive object with message(array with messages/texts) and code(status code). <br>
@@ -42,7 +42,7 @@ password: 123456 <br>
   -> ONLY FOR ADMIN USER. You can update an item for each of the sections depending on your choice. In order to update the item you need to send the following: tittle, col, price, description, characteristics, picture. If the request is successfull you will receive an object with message (array with messages/texts), status code   
   and also itemID. If the request is not successfull you will receive an object with message (array with messages/texts) and code (status code). <br>
 
-#Schema
+# Schema
 **USER SCHEMA**  <br>
 * email: string, password: string, name: string, town: string, streetName: string, streetNumber: string, tel: number <br>
 **PRODUCT SCHEMA* <br>
