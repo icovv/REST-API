@@ -46,6 +46,6 @@ password: 123456 <br>
 **USER SCHEMA**  <br>
 * email: string, password: string, name: string, town: string, streetName: string, streetNumber: string, tel: number <br>
 <br> **PRODUCTS SCHEMA** <br>
-* tittle: string, col: string, price: number, description: string, characteristics: string, picture: buffer, contentType: string (mimetype of the picture).  <br>
+* tittle: string, col: string (this is the collection of the product), price: number, description: string, characteristics: string, picture: buffer, contentType: string (mimetype of the picture).  <br>
 
 
