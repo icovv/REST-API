@@ -1,6 +1,6 @@
 const {Router} = require('express');
 const {body,validationResult} = require('express-validator');
-const { login, register, getProfileData } = require('../services/userService');
+const { login, register, getProfileData, changeProfileData } = require('../services/userService');
 const { createToken } = require('../services/jwt');
 const { parseError } = require('../utils/errorParser');
 const { isGuest, isUser } = require('../midlewares/guards');
@@ -83,7 +83,7 @@ userRouter.get('/profile', isUser(),
             town: result.town,
             streetName: result.streetName,
             streetNumber: result.streetNumber,
-            tel: result.tel,
+            tel: "0" + result.tel,
             accessToken: req.headers['x-authorization']
         })
         }catch(error){
@@ -92,6 +92,38 @@ userRouter.get('/profile', isUser(),
             res.json({code: 403, message: Object.values(parserd.errors)})
         }
 })
+
+userRouter.put('/profile',
+    isUser(),
+    body('name').trim().isString().isLength({min:1}).withMessage('Please enter valid name!'),
+    body('town').trim().isString().isLength({min:1}).withMessage('Please enter valid town name!'),
+    body('streetName').trim().isString().isLength({min:1}).withMessage('Please enter valid street name!'),
+    body('streetNumber').trim().isNumeric().isLength({min:1}).withMessage('Please enter valid street number!'),
+    body('tel').trim().isNumeric().isLength({min:10,max:10}).withMessage('Please enter valid telephone number!'),
+    async(req,res) => {
+        try {
+            if(!req.body["_id"]){
+                throw new Error("Please log into your account in order to view your profile data!")
+            }
+            let result = await changeProfileData(req.body["_id"],req.body.name,req.body.town,req.body.streetName,req.body.streetNumber,req.body.tel);
+            res.json({
+                _id: result._id,
+                email: result.email,
+                name:result.name,
+                town: result.town,
+                streetName: result.streetName,
+                streetNumber: result.streetNumber,
+                tel: result.tel,
+                accessToken: req.headers['x-authorization']
+            })
+        } catch (error) {
+            const parserd = parseError(error);
+            res.status(403);
+            res.json({code: 403, message: Object.values(parserd.errors)})
+        }
+
+    }
+)
 
 // body('name').trim().isString().isLength({min:1}).withMessage('Please enter valid name!'),
 // body('town').trim().isString().isLength({min:1}).withMessage('Please enter valid town name!'),

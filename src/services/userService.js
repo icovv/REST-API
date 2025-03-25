@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 
 
 async function register(email,password) {
-    let existing = await User.findOne({'email':email});
+    let existing = await User.findOne({'email':email}).lean();
 
     if(existing) {
         throw new Error('This email is already in use!')
@@ -49,7 +49,7 @@ async function register(email,password) {
 // }
 
 async function login(email, password) {
-    const user = await User.findOne({"email":email});
+    const user = await User.findOne({"email":email}).lean();
     if (!user){
         throw new Error(`Incorrect email or password`);
     }
@@ -72,4 +72,25 @@ async function getProfileData(id){
 
 }
 
-module.exports = {login, register,getProfileData};
+async function changeProfileData(id,name,town,streetName,streetNumber,tel) {
+    let user = await User.findOne({"_id":id}).lean();
+    if(!user){
+        throw new Error('No user with such credentials was found in our DataBase');
+    }
+    let newUser = await User.findByIdAndUpdate(
+        id,
+        {
+            email: user.email,
+            password: user.password,
+            name:name,
+            town:town,
+            streetName:streetName,
+            streetNumber:streetNumber,
+            tel:tel
+        },
+        {new:true}).lean();
+
+     return newUser;   
+}
+
+module.exports = {login, register,getProfileData,changeProfileData};
