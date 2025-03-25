@@ -9,7 +9,7 @@ const req = require('express/lib/request');
 const userRouter = Router();
 
 userRouter.post('/login',
-    isGuest(), 
+    isUser(), 
     body('email').trim(),
     body('password').trim(),
     async(req,res) => {
@@ -23,7 +23,7 @@ userRouter.post('/login',
             town: result.town,
             streetName: result.streetName,
             streetNumber: result.streetNumber,
-            tel: "0" + result.tel,
+            tel: result.tel,
             accessToken
         })
     } catch (error) {
@@ -36,7 +36,7 @@ userRouter.post('/login',
 
 })
 userRouter.post('/register', 
-    isGuest(),
+    isUser(),
     body('email').trim().isEmail().withMessage('Please enter valid email!'),
     body('password').trim().isLength({min:6}).withMessage('Password must be at least 4 characters long!'),
     async(req,res) => {

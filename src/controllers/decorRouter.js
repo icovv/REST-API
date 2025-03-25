@@ -16,7 +16,6 @@ const upload = multer({storage:storage});
 decorRouter.get('/decor', async(req,res) => {
     try {
         const items = await Decor.find().lean();
-        console.log(items, "tuk");
         if(items.length < 1){
             return res.status(400).json({code: 400, message:["No Decor items were found!"]});
         }
