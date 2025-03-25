@@ -9,7 +9,7 @@ const req = require('express/lib/request');
 const userRouter = Router();
 
 userRouter.post('/login',
-    isUser(), 
+    isGuest(), 
     body('email').trim(),
     body('password').trim(),
     async(req,res) => {
@@ -36,7 +36,7 @@ userRouter.post('/login',
 
 })
 userRouter.post('/register', 
-    isUser(),
+    isGuest(),
     body('email').trim().isEmail().withMessage('Please enter valid email!'),
     body('password').trim().isLength({min:6}).withMessage('Password must be at least 4 characters long!'),
     async(req,res) => {

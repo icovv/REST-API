@@ -1,17 +1,17 @@
 function isUser(){
     return function (req,res,next){
-        if(!req.body.email){
-            res.status(401);
-            res.json({code:403,message:"Unauthorized actions not allowed!"})
-        } else {
-            next()
-        }
+            if(!req.headers['x-authorization']){
+                res.status(401);
+                res.json({code:403,message:"Unauthorized actions not allowed!"});
+            } else {
+                next();
+            }
     }
 }
 
 function isGuest(){
     return function (req,res,next){
-        if(req.body.email){
+        if(req.headers['x-authorization']){
             res.status(403);
             res.json({code:403,message:"You have already signed up!"})
         } else {
