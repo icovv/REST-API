@@ -62,4 +62,14 @@ async function login(email, password) {
     return user;
 }
 
-module.exports = {login, register};
+async function getProfileData(id){
+    let user = await User.findOne({"_id":id});
+    if(!user){
+        throw new Error('No user with such credentials was found in our DataBase');
+    }
+
+    return user;
+
+}
+
+module.exports = {login, register,getProfileData};
