@@ -12,23 +12,18 @@ const userSchema = new Schema({
     },
     name: {
         type: String,
-        required: true,
     },
     town: {
         type: String,
-        required: true,
     },
     streetName: {
         type: String,
-        required: true,
     },
     streetNumber: {
         type: Number,
-        required: true,
     },
     tel: {
         type: Number,
-        required: true
     }
 },{
     collation: {

@@ -4,10 +4,12 @@ const { login, register } = require('../services/userService');
 const { createToken } = require('../services/jwt');
 const { parseError } = require('../utils/errorParser');
 const { isGuest, isUser } = require('../midlewares/guards');
+const req = require('express/lib/request');
 
 const userRouter = Router();
 
-userRouter.post('/login', 
+userRouter.post('/login',
+    isGuest(), 
     body('email').trim(),
     body('password').trim(),
     async(req,res) => {
@@ -33,23 +35,18 @@ userRouter.post('/login',
     }
 
 })
-userRouter.post('/register', isGuest(),
+userRouter.post('/register', 
+    isGuest(),
     body('email').trim().isEmail().withMessage('Please enter valid email!'),
     body('password').trim().isLength({min:6}).withMessage('Password must be at least 4 characters long!'),
-    body('name').trim().isString().isLength({min:1}).withMessage('Please enter valid name!'),
-    body('town').trim().isString().isLength({min:1}).withMessage('Please enter valid town name!'),
-    body('streetName').trim().isString().isLength({min:1}).withMessage('Please enter valid street name!'),
-    body('streetNumber').trim().isNumeric().isLength({min:1}).withMessage('Please enter valid street number!'),
-    body('tel').trim().isNumeric().isLength({min:10,max:10}).withMessage('Please enter valid telephone number!'),
-
     async(req,res) => {
-        const {email,password,name,town,streetName,streetNumber,tel} = req.body
+        const {email,password} = req.body
         try {
             const isResultValid = validationResult(req);
             if (isResultValid.errors.length){
                 throw isResultValid.errors
             }
-            const result = await register(email,password,name,town,streetName,streetNumber,tel);
+            const result = await register(email,password);
             let accessToken = createToken({email:result.email,_id:result._id});
             res.json({
                 _id: result._id,
@@ -58,7 +55,7 @@ userRouter.post('/register', isGuest(),
                 town: result.town,
                 streetName: result.streetName,
                 streetNumber: result.streetNumber,
-                tel: "0" + result.tel,
+                tel: result.tel,
                 accessToken
             })
         } catch (error) {
@@ -70,6 +67,17 @@ userRouter.post('/register', isGuest(),
 userRouter.get('/logout',isUser(), async(req,res) => {
     res.status(200);
     res.json({code:200, message:["You have successfully logged out!"]})
+})
+
+userRouter.get('/profile', isUser(),
+    body('name').trim().isString().isLength({min:1}).withMessage('Please enter valid name!'),
+    body('town').trim().isString().isLength({min:1}).withMessage('Please enter valid town name!'),
+    body('streetName').trim().isString().isLength({min:1}).withMessage('Please enter valid street name!'),
+    body('streetNumber').trim().isNumeric().isLength({min:1}).withMessage('Please enter valid street number!'),
+    body('tel').trim().isNumeric().isLength({min:10,max:10}).withMessage('Please enter valid telephone number!'),
+    
+    async(req,res) => {
+
 })
 
 module.exports ={userRouter}
