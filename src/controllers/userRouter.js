@@ -16,7 +16,7 @@ userRouter.post('/login',
     try {
         const result = await login(req.body.email,req.body.password);
         const accessToken = createToken({email:result.email,_id:result._id});
-        res.json({
+        res.status(200).json({
             _id: result._id,
             email: result.email,
             name:result.name,
@@ -27,8 +27,7 @@ userRouter.post('/login',
             accessToken
         })
     } catch (error) {
-        res.status(403);
-        res.json({
+        res.status(403).json({
             code:403,
             message: ["Incorrect Email or Password"],
         });
@@ -48,7 +47,7 @@ userRouter.post('/register',
             }
             const result = await register(email,password);
             let accessToken = createToken({email:result.email,_id:result._id});
-            res.json({
+            res.status(200).json({
                 _id: result._id,
                 email: result.email,
                 name:result.name,
@@ -60,13 +59,11 @@ userRouter.post('/register',
             })
         } catch (error) {
             const parserd = parseError(error);
-            res.status(403);
-            res.json({code: 403, message: Object.values(parserd.errors)})
+            res.status(403).json({code: 403, message: Object.values(parserd.errors)})
         }
 })
 userRouter.get('/logout',isUser(), async(req,res) => {
-    res.status(200);
-    res.json({code:200, message:["You have successfully logged out!"]})
+    res.status(200).json({code:200, message:["You have successfully logged out!"]})
 })
 
 userRouter.get('/profile', isUser(),
@@ -76,7 +73,7 @@ userRouter.get('/profile', isUser(),
             throw new Error("Please log into your account in order to view your profile data!")
         }
         let result = await getProfileData(req.body["_id"]);
-        res.json({
+        res.status(200).json({
             _id: result._id,
             email: result.email,
             name:result.name,
@@ -88,8 +85,7 @@ userRouter.get('/profile', isUser(),
         })
         }catch(error){
             const parserd = parseError(error);
-            res.status(403);
-            res.json({code: 403, message: Object.values(parserd.errors)})
+            res.status(403).json({code: 403, message: Object.values(parserd.errors)})
         }
 })
 
@@ -106,7 +102,7 @@ userRouter.put('/profile',
                 throw new Error("Please log into your account in order to view your profile data!")
             }
             let result = await changeProfileData(req.body["_id"],req.body.name,req.body.town,req.body.streetName,req.body.streetNumber,req.body.tel);
-            res.json({
+            res.status(200).json({
                 _id: result._id,
                 email: result.email,
                 name:result.name,
@@ -118,8 +114,7 @@ userRouter.put('/profile',
             })
         } catch (error) {
             const parserd = parseError(error);
-            res.status(403);
-            res.json({code: 403, message: Object.values(parserd.errors)})
+            res.status(403).json({code: 403, message: Object.values(parserd.errors)})
         }
 
     }
