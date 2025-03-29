@@ -63,7 +63,7 @@ userRouter.post('/register',
         }
 })
 userRouter.get('/logout',isUser(), async(req,res) => {
-    res.status(200).json({code:200, message:["You have successfully logged out!"]})
+    res.status(204).json({code:204, message:["You have successfully logged out!"]})
 })
 
 userRouter.get('/profile', isUser(),
