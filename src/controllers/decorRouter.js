@@ -17,7 +17,7 @@ decorRouter.get('/decor', async(req,res) => {
     try {
         const items = await Decor.find().lean();
         if(items.length < 1){
-            return res.status(400).json({code: 400, message:["No Decor items were found!"]});
+            return res.status(404).json({code: 404, message:["No Decor items were found!"]});
         }
         if(items.length > 0){
         items.forEach((el) => el.picture.toString("base64"))
@@ -34,7 +34,7 @@ decorRouter.get('/decor/:id', async(req,res) => {
     try {
         const item = await Decor.findById(id).lean();
         if(!item){
-            return res.status(400).json({code: 400, message:["Decor item not found!"]});
+            return res.status(404).json({code: 404, message:["Decor item not found!"]});
         }
         res.status(200).res.json({
             itemId: item._id,

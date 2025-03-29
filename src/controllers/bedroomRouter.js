@@ -18,7 +18,7 @@ bedroomRouter.get('/bedroom', async(req,res) => {
         const items = await Bedroom.find().lean();
         console.log(items, "tuk");
         if(items.length < 1){
-            return res.status(400).json({code: 400, message:["No Bedroom items were found!"]});
+            return res.status(404).json({code: 404, message:["No Bedroom items were found!"]});
         }
         if(items.length > 0){
         items.forEach((el) => el.picture.toString("base64"))
@@ -35,7 +35,7 @@ bedroomRouter.get('/bedroom/:id', async(req,res) => {
     try {
         const item = await Bedroom.findById(id).lean();
         if(!item){
-            return res.status(400).json({code: 400, message:["Bedroom item not found!"]});
+            return res.status(404).json({code: 404, message:["Bedroom item not found!"]});
         }
         res.status(200).res.json({
             itemId: item._id,

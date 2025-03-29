@@ -18,7 +18,7 @@ diningRoomRouter.get('/dining-room', async(req,res) => {
         const items = await DiningRoom.find().lean();
         console.log(items, "tuk");
         if(items.length < 1){
-            return res.status(400).json({code: 400, message:["No Dining room items were found!"]});
+            return res.status(404).json({code: 404, message:["No Dining room items were found!"]});
         }
         if(items.length > 0){
         items.forEach((el) => el.picture.toString("base64"))
@@ -35,7 +35,7 @@ diningRoomRouter.get('/dining-room/:id', async(req,res) => {
     try {
         const item = await DiningRoom.findById(id).lean();
         if(!item){
-            return res.status(400).json({code: 400, message:["Dining room item not found!"]});
+            return res.status(404).json({code: 404, message:["Dining room item not found!"]});
         }
         res.status(200).res.json({
             itemId: item._id,
