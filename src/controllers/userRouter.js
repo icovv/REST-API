@@ -37,7 +37,7 @@ userRouter.post('/login',
 userRouter.post('/register', 
     isGuest(),
     body('email').trim().isEmail().withMessage('Please enter valid email!'),
-    body('password').trim().isLength({min:6}).withMessage('Password must be at least 4 characters long!'),
+    body('password').trim().isLength({min:6}).withMessage('Password must be at least 6 characters long!'),
     async(req,res) => {
         const {email,password} = req.body
         try {
