@@ -24,6 +24,7 @@ userRouter.post('/login',
             streetName: result.streetName,
             streetNumber: result.streetNumber,
             tel: result.tel,
+            admin:result.admin,
             accessToken
         })
     } catch (error) {
@@ -55,6 +56,7 @@ userRouter.post('/register',
                 streetName: result.streetName,
                 streetNumber: result.streetNumber,
                 tel: result.tel,
+                admin:result.admin,
                 accessToken
             })
         } catch (error) {
@@ -81,6 +83,7 @@ userRouter.get('/profile', isUser(),
             streetName: result.streetName,
             streetNumber: result.streetNumber,
             tel: "0" + result.tel,
+            admin:result.admin,
             accessToken: req.headers['x-authorization']
         })
         }catch(error){
@@ -110,6 +113,7 @@ userRouter.put('/profile',
                 streetName: result.streetName,
                 streetNumber: result.streetNumber,
                 tel: result.tel,
+                admin:result.admin,
                 accessToken: req.headers['x-authorization']
             })
         } catch (error) {
