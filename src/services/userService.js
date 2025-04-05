@@ -16,7 +16,8 @@ async function register(email,password) {
         town: '',
         streetName: '' ,
         streetNumber: 0,
-        tel: 0
+        tel: 0,
+        admin:false,
     })
     
     await user.save();
@@ -63,7 +64,7 @@ async function login(email, password) {
 }
 
 async function getProfileData(id){
-    let user = await User.findOne({"_id":id});
+    let user = await User.findOne({"_id":id}).lean();
     if(!user){
         throw new Error('No user with such credentials was found in our DataBase');
     }
@@ -86,7 +87,8 @@ async function changeProfileData(id,name,town,streetName,streetNumber,tel) {
             town:town,
             streetName:streetName,
             streetNumber:streetNumber,
-            tel:tel
+            tel:tel,
+            admin:false,
         },
         {new:true}).lean();
 

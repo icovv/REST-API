@@ -17,6 +17,7 @@ async function configDB() {
             streetName:"Admin",
             streetNumber: "111",
             tel:1111111111,
+            admin:true,
         })
         adminUser.save()
         .then(()=>{

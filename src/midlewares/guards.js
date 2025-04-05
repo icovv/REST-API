@@ -24,7 +24,7 @@ function isAdmin(){
     return function(req,res,next){
         if(!(req.body.email === 'admin@admin.admin')){
             res.status(401).json({code:401,message:"You have to be an admin in order to do this!"})
-        } else {
+        } else if(req.body.admin == true) {
             next();
         }
     }

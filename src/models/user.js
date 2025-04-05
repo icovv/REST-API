@@ -24,6 +24,9 @@ const userSchema = new Schema({
     },
     tel: {
         type: Number,
+    },
+    admin:{
+        type: Boolean,
     }
 },{
     collation: {
