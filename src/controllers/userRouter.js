@@ -68,13 +68,14 @@ userRouter.get('/logout',isUser(), async(req,res) => {
     res.status(204).json({code:204, message:["You have successfully logged out!"]})
 })
 
-userRouter.get('/profile', isUser(),
+userRouter.get('/profile/:id', isUser(),
     async(req,res) => {
+        let id = req.params.id;
         try{
-        if(!req.body["_id"]){
+        if(!id){
             throw new Error("Please log into your account in order to view your profile data!")
         }
-        let result = await getProfileData(req.body["_id"]);
+        let result = await getProfileData(id);
         res.status(200).json({
             _id: result._id,
             email: result.email,
@@ -96,7 +97,7 @@ userRouter.get('/profile', isUser(),
         }
 })
 
-userRouter.put('/profile',
+userRouter.put('/profile/:id',
     isUser(),
     body('email').trim().isEmail().withMessage('Please enter valid email!'),
     body('password').trim().isLength({min:6}).withMessage('Password must be at least 6 characters long!'),
@@ -106,11 +107,12 @@ userRouter.put('/profile',
     body('streetNumber').trim().isNumeric().isLength({min:1}).withMessage('Please enter valid street number!'),
     body('tel').trim().isNumeric().isLength({min:10,max:10}).withMessage('Please enter valid telephone number!'),
     async(req,res) => {
+        let id = req.params.id
         try {
-            if(!req.body["_id"]){
+            if(!id){
                 throw new Error("Please log into your account in order to view your profile data!")
             }
-            let result = await changeProfileData(req.body["_id"],req.body.name,req.body.town,req.body.streetName,req.body.streetNumber,req.body.tel, req.body.email,req.body.password);
+            let result = await changeProfileData(id,req.body.name,req.body.town,req.body.streetName,req.body.streetNumber,req.body.tel, req.body.email,req.body.password);
             res.status(200).json({
                 _id: result._id,
                 email: result.email,
