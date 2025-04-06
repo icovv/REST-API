@@ -87,6 +87,10 @@ userRouter.get('/profile', isUser(),
             accessToken: req.headers['x-authorization']
         })
         }catch(error){
+            if(error.kind){
+                res.status(404).json({code: 404, message: ["No such user found in our Database!"]})
+                return;
+            }
             const parserd = parseError(error);
             res.status(403).json({code: 403, message: Object.values(parserd.errors)})
         }
