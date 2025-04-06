@@ -98,6 +98,8 @@ userRouter.get('/profile', isUser(),
 
 userRouter.put('/profile',
     isUser(),
+    body('email').trim().isEmail().withMessage('Please enter valid email!'),
+    body('password').trim().isLength({min:6}).withMessage('Password must be at least 6 characters long!'),
     body('name').trim().isString().isLength({min:1}).withMessage('Please enter valid name!'),
     body('town').trim().isString().isLength({min:1}).withMessage('Please enter valid town name!'),
     body('streetName').trim().isString().isLength({min:1}).withMessage('Please enter valid street name!'),
@@ -108,7 +110,7 @@ userRouter.put('/profile',
             if(!req.body["_id"]){
                 throw new Error("Please log into your account in order to view your profile data!")
             }
-            let result = await changeProfileData(req.body["_id"],req.body.name,req.body.town,req.body.streetName,req.body.streetNumber,req.body.tel);
+            let result = await changeProfileData(req.body["_id"],req.body.name,req.body.town,req.body.streetName,req.body.streetNumber,req.body.tel, req.body.email,req.body.password);
             res.status(200).json({
                 _id: result._id,
                 email: result.email,
