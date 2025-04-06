@@ -73,7 +73,7 @@ async function getProfileData(id){
 
 }
 
-async function changeProfileData(id,name,town,streetName,streetNumber,tel, email,password) {
+async function changeProfileData(id,name,town,streetName,streetNumber,tel) {
     let user = await User.findOne({"_id":id}).lean();
     if(!user){
         throw new Error('No user with such credentials was found in our DataBase');
@@ -82,8 +82,8 @@ async function changeProfileData(id,name,town,streetName,streetNumber,tel, email
     let newUser = await User.findByIdAndUpdate(
         id,
         {
-            email: email,
-            password: password,
+            email: user.email,
+            password: user.password,
             name:name,
             town:town,
             streetName:streetName,
