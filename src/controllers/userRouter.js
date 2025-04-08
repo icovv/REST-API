@@ -99,16 +99,57 @@ userRouter.get('/profile/:id', isUser(),
 
 userRouter.put('/profile/:id',
     isUser(),
-    body('name').trim().isString().isLength({min:1}).withMessage('Please enter valid name!'),
-    body('town').trim().isString().isLength({min:1}).withMessage('Please enter valid town name!'),
-    body('streetName').trim().isString().isLength({min:1}).withMessage('Please enter valid street name!'),
-    body('streetNumber').trim().isNumeric().isLength({min:1}).withMessage('Please enter valid street number!'),
-    body('tel').trim().isNumeric().isLength({min:10,max:10}).withMessage('Please enter valid telephone number!'),
+    body('name').trim().isLength({min:4,max:12}).withMessage('Please enter valid name!').custom(value => {
+        let textPattern = /^[a-zA-Z]+$/
+
+        if(!textPattern.test(value)){
+            throw new Error("Please enter valid name!");
+        }
+        return true;
+    }),
+    body('town').trim().isLength({min:1}).withMessage('Please enter valid town name!').custom(value => {
+        let textPattern = /^[a-zA-Z]+$/
+
+        if(!textPattern.test(value)){
+            throw new Error('Please enter valid town name!');
+        }
+        return true;
+    }),
+    body('streetName').trim().isLength({min:1}).withMessage('Please enter valid street name!').custom(value => {
+        let textPattern = /^[a-zA-Z]+$/
+
+        if(!textPattern.test(value)){
+            throw new Error('Please enter valid street name!');
+        }
+        return true;
+    }),
+    body('streetNumber').trim().isLength({min:1}).withMessage('Please enter valid street number!').custom(value => {
+         let numPatter = /\d+/
+
+        if(!textPattern.test(value)){
+            throw new Error('Please enter valid street number!');
+        }
+        return true;
+    }),
+    body('tel').trim().isLength({min:10,max:10}).withMessage('Please enter valid telephone number!').custom(value => {
+         let numPatter = /\d+/
+
+        if(!textPattern.test(value)){
+            throw new Error('Please enter valid telephone number!');
+        }
+        return true;
+    }),
     async(req,res) => {
         let id = req.params.id
         try {
             if(!id){
                 throw new Error("Please log into your account in order to view your profile data!")
+            }
+
+            console.log(String(req.body.town));
+            const isResultValid = validationResult(req);
+            if (isResultValid.errors.length){
+                throw isResultValid.errors
             }
             let result = await changeProfileData(id,req.body.name,req.body.town,req.body.streetName,req.body.streetNumber,req.body.tel );
             res.status(200).json({
@@ -128,7 +169,7 @@ userRouter.put('/profile/:id',
                 return;
             }
             const parserd = parseError(error);
-            res.status(403).json({code: 403, message: Object.values(parserd.errors)})
+            res.status(400).json({code: 400, message: Object.values(parserd.errors)})
         }
 
     }
