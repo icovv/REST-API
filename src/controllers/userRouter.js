@@ -142,16 +142,16 @@ userRouter.put('/profile/:id',
     async(req,res) => {
         let id = req.params.id
         try {
+
             if(!id){
-                throw new Error("Please log into your account in order to view your profile data!")
+                throw new Error("Please log into your account in order to view your profile data!");
             }
 
-            console.log(String(req.body.town));
             const isResultValid = validationResult(req);
             if (isResultValid.errors.length){
                 throw isResultValid.errors
             }
-            let result = await changeProfileData(id,req.body.name,req.body.town,req.body.streetName,req.body.streetNumber,req.body.tel );
+            let result = await changeProfileData(id, req.body);
             res.status(200).json({
                 _id: result._id,
                 email: result.email,
