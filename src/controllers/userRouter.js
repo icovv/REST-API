@@ -5,6 +5,8 @@ const { createToken } = require('../services/jwt');
 const { parseError } = require('../utils/errorParser');
 const { isGuest, isUser } = require('../midlewares/guards');
 const req = require('express/lib/request');
+const { stringValidator } = require('../utils/stringValidator');
+const { numberValidator } = require('../utils/numberValidator');
 
 const userRouter = Router();
 
@@ -99,43 +101,55 @@ userRouter.get('/profile/:id', isUser(),
 
 userRouter.put('/profile/:id',
     isUser(),
-    body('name').trim().isLength({min:4,max:12}).withMessage('Please enter valid name!').custom(value => {
-        let textPattern = /^[a-zA-Z]+$/
-
-        if(!textPattern.test(value)){
-            throw new Error("Please enter valid name!");
+    body('name').trim().custom(value => {
+        if(value == ""){
+            return true;
         }
+        if(!stringValidator(value)){
+            throw new Error("Please enter valid name!")
+        }
+
         return true;
     }),
-    body('town').trim().isLength({min:1}).withMessage('Please enter valid town name!').custom(value => {
-        let textPattern = /^[a-zA-Z]+$/
+    body('town').trim().custom(value => {
+        if(value == ""){
+            return true;
+        }
 
-        if(!textPattern.test(value)){
+        if(value.length < 4 || value.length > 12 || !stringValidator(value)){
             throw new Error('Please enter valid town name!');
         }
+
         return true;
     }),
-    body('streetName').trim().isLength({min:1}).withMessage('Please enter valid street name!').custom(value => {
-        let textPattern = /^[a-zA-Z]+$/
-
-        if(!textPattern.test(value)){
-            throw new Error('Please enter valid street name!');
+    body('streetName').trim().custom(value => {
+        if(value == ""){
+            return true;
         }
-        return true;
-    }),
-    body('streetNumber').trim().isLength({min:1}).withMessage('Please enter valid street number!').custom(value => {
-         let numPatter = /\d+/
-
-        if(!textPattern.test(value)){
-            throw new Error('Please enter valid street number!');
+        if(!stringValidator(value)){
+            throw new Error("Please enter valid street name!")
         }
+
         return true;
     }),
-    body('tel').trim().isLength({min:10,max:10}).withMessage('Please enter valid telephone number!').custom(value => {
-         let numPatter = /\d+/
+    body('streetNumber').trim().custom(value => {
+        if (value == ""){
+            return true;
+        }
 
-        if(!textPattern.test(value)){
-            throw new Error('Please enter valid telephone number!');
+        if(!numberValidator(value)){
+            throw new Error("Please enter valid street number!")
+        }
+
+        return true;
+    }),
+    body('tel').trim().custom(value => {
+        if(value == "" || value == 0){
+            return true;
+        }
+
+        if(value.length != 10 || !numberValidator(value)){
+            throw new Error("Please enter valid Bulgarian telephone number!")
         }
         return true;
     }),

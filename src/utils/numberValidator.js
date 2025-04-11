@@ -1,4 +1,4 @@
-export default function numberValidator(number){
+function numberValidator(number){
     let numPatter = /\d+/
 
     if(!numPatter.test(number)){
@@ -7,3 +7,5 @@ export default function numberValidator(number){
     return true;
 
 }
+
+module.exports={numberValidator}

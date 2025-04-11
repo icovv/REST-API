@@ -1,4 +1,4 @@
-export default function stringValidator(string){
+function stringValidator(string){
     let textPattern = /^[a-zA-Z]+$/;
 
     if(!textPattern.test(string)){
@@ -7,3 +7,5 @@ export default function stringValidator(string){
     return true;
 
 }
+
+module.exports={stringValidator}
