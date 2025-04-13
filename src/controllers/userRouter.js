@@ -116,7 +116,7 @@ userRouter.put('/profile/:id',
             return true;
         }
 
-        if(value.length < 4 || value.length > 12 || !stringValidator(value)){
+        if(!stringValidator(value)){
             throw new Error('Please enter valid town name!');
         }
 
