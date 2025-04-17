@@ -2,7 +2,7 @@
 
 **Service might be updated while the frontend is being built!!!**
 
-This is a RESTful API built with **Node.js**, **Express**, **Mongoose**, and **MongoDB** for an online store selling bedroom items (such as bedding), decorations for your house and dining room items (such as plates and cutlery). The API supports various endpoints to manage products in the store, including CRUD operations.There will be an admin panel where only the user who is logged in with the admin account will be able to create, update and delete the items. All other users will have accounts so they can order stuff easier as their data will be prepopulated in the neccassary fields in the order screen.
+This is a RESTful API built with **Node.js**, **Express**, **Mongoose**, and **MongoDB** for an online store selling bedroom items (such as bedding), decorations for your house and dining room items (such as plates and cutlery). The API supports various endpoints to manage products in the store, including CRUD operations.There will be an admin panel where only the user who is logged in with the admin account will be able to create, update and delete the items. All other users will have accounts so they can order items easier as their data will be prepopulated in the neccassary fields in the order screen.
 
 #Admin account <br>
 email: admin@admin.admin <br>
