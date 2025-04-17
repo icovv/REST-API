@@ -23,11 +23,15 @@ password: 123456 <br>
 # Endpoints
 **USER SERVICES** <br>
 * POST http://localhost:3000/login <br>
-  -> Log into your account. Successfull response returns object with _id, email, name, town, streetName, streetNumber, tel, accessToken, otherwise you will receive object with message(array with messages/texts) and code(status code). <br>
+  -> Log into your account. Successfull response returns object with _id, email, name, town, streetName, streetNumber, tel, accessToken, admin otherwise you will receive object with message(array with messages/texts) and code(status code). Validation included is if the there is no such user with that email in the DB (or if no email has been provided), if the request is from a user who is logged in (if the user is logged in the frontend provides "X-Authorization" header with accessToken), if invalid password has been provided you will receive an error message (comparing the provided password with the one in the DB). Email and Password are both sanitized before making the request to the DB. <br>
 * POST http://localhost:3000/register <br>
-  -> Create an account in the platform. For registration you need the following: email, name, town, streetName, streetNumber and tel. Response returns object with _id, email, name, town, streetName, streetNumber, tel, accessToken, otherwise you will receive object with message(array with messages/texts) and code(status code). <br>
+  -> Create an account in the platform. For registration you need the following: email and password. Response returns object with _id, email, name, town, streetName, streetNumber, tel, accessToken, admin otherwise you will receive object with message(array with messages/texts) and code(status code). Validation included is if the there is such user with that email in the DB, if the request is from a user who is logged in (if the user is logged in the frontend provides "X-Authorization" header with accessToken), if the email provided is not an email and if the password`s length is less than 6 chars. Both the email and the password are sanitized before making the request to the DB. <br>
 * GET http://localhost:3000/logout <br>
-  -> Logout of your account. You will receive object with message(array with messages/texts) and code(status code). <br>
+  -> Logout of your account. You will receive object with message(array with messages/texts) and code(status code). Validation included is if the user has already been logged in. <br>
+* GET http://localhost:3000/profile/:id <br>
+  -> Get the profile data of the user.Successfull response returns object with _id, email, name, town, streetName, streetNumber, tel, accessToken, admin otherwise you will receive object with message(array with messages/texts) and code(status code). Validation included is if the there is no such user with that ID in the DB (or if no userID has been provided), if the user has already been logged in.<br>
+* PUT http://localhost:3000/profile/:id <br>
+  -> Change the profile data of the user. Successfull response returns object with updated data which includes _id, email, name, town, streetName, streetNumber, tel, accessToken, admin otherwise you will receive object with message(array with messages/texts) and code(status code). Validation included is if the there is no such user with that ID in the DB (or if no userID has been provided), if the user has logged in, if name,town,streetName,streetNumber and tel are empty strings (user tries to erase his data from the db) else if name,town,streetName are strings and if tel is 10 characters long and the value provided is a number and if streetNumber is also a number. All values are sanitized before making the request to the DB.<br>
 <br> **PRODUCT ENDPOINTS** <br>
 * GET http://localhost:3000/bedroom / http://localhost:3000/decor / http://localhost:3000/dining-room <br>
   -> Get all products which are in one of the three categories (based on your choice). On successful response you will receive the items as objects in an array. Schema will be below for reference. If the request is unsuccessfull you will receive object with message(array with messages/texts) and code(status code). <br>
@@ -44,7 +48,7 @@ password: 123456 <br>
 
 # Schema
 **USER SCHEMA**  <br>
-* email: string, password: string, name: string, town: string, streetName: string, streetNumber: string, tel: number <br>
+* email: string, password: string, name: string, town: string, streetName: string, streetNumber: string, tel: number <br>, admin: boolean <br>
 <br> **PRODUCTS SCHEMA** <br>
 * tittle: string, col: string (this is the collection of the product), price: number, description: string, characteristics: string, picture: buffer, contentType: string (mimetype of the picture).  <br>
 
