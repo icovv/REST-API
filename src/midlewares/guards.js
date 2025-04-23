@@ -22,9 +22,10 @@ function isGuest(){
 
 function isAdmin(){
     return function(req,res,next){
-        if(!(req.body.email === 'admin@admin.admin')){
+        console.log(req.user.email);
+        if(!(req.body.email === 'admin@admin.admin' || req.user.email === 'admin@admin.admin')){
             res.status(403).json({code:401,message:"You have to be an admin in order to do this!"})
-        } else if(req.body.admin == true) {
+        } else if(req.body.admin == true || req.user.email === 'admin@admin.admin') {
             next();
         }
     }
