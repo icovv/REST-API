@@ -4,7 +4,8 @@ const multer = require('multer')
 const {Bedroom} = require('../models/bedroom')
 const {body,validationResult} = require('express-validator');
 const {fileFilter} = require('../midlewares/fileFilter')
-const {parseError} = require('../utils/errorParser')
+const {parseError} = require('../utils/errorParser');
+const { numberValidator } = require('../utils/numberValidator');
 
 const bedroomRouter = Router();
 
@@ -55,11 +56,23 @@ bedroomRouter.post('/admin/bedroom',
     isAdmin(),
     upload.single('image'),
     fileFilter(),
-    body('title').trim().isString().withMessage('Please enter valid title!').notEmpty().withMessage('Please enter valid title!'),
-    body('characteristics').trim().isString().withMessage('Please enter valid characteristics!').notEmpty().withMessage('Please enter valid characteristics!'),
-    body('description').trim().isString().withMessage('Please enter valid characteristics!').notEmpty().withMessage('Please enter valid characteristics!'),
-    body('price').trim().isNumeric().withMessage("Please enter valid price!").notEmpty().withMessage("Please enter valid price!"),
-    body('col').trim().isString().withMessage("Please enter valid collection name!").notEmpty().withMessage("Please enter valid price!"),
+    body('title').trim().custom(value => {
+
+        if(value == ""){
+            throw new Error('Please enter valid title!')
+        };
+
+        return true;
+
+    }),
+    body('price').trim().custom(value => {
+        if (value == "" || !numberValidator(value)){
+            throw new Error("Please enter valid price!")
+        }
+
+        return true;
+
+    }),
     async(req,res) => {
     const {title,price,description,characteristics,col} = req.body;
     const {originalName, buffer, mimetype} = req.file;
@@ -80,7 +93,7 @@ bedroomRouter.post('/admin/bedroom',
             res.status(500).json({ code: 500, message: Object.values(parsedErr.errors)});
         }
         await item.save();
-        res.status(200).json({ code: 200, message: ['Bedroom item uploaded successfully!'], itemId: item._id });
+        res.status(200).json({ code: 200, itemId: item._id, message: ['Bedroom item created successfully!'] });
       } catch (error) {
         console.log(error);
         res.status(500).json({ code: 500, message: ["An error occured while loading your item!"]});
