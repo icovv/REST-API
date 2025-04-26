@@ -7,7 +7,6 @@ const diningRoomSchema = new Schema({
     },
     col: {
         type: String,
-        required: true
     },
     price: {
         type: Number,
@@ -15,11 +14,9 @@ const diningRoomSchema = new Schema({
     },
     description: {
         type:String,
-        required:true
     },
     characteristics: {
         type: String,
-        required:true
     },
     picture: {
         type: Buffer,
