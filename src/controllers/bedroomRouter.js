@@ -18,7 +18,10 @@ bedroomRouter.get('/bedroom', async(req,res) => {
     try {
         const items = await Bedroom.find().lean();
         if(items.length > 0){
-        items.forEach((el) => el.picture.toString("base64"))
+        items.forEach(
+            (el) => {
+                el.picture.toString("base64")
+                el.cat = "bedroom"});
         }
         res.status(200).json({code: 200, items: items});
     } catch (error) {
@@ -35,6 +38,7 @@ bedroomRouter.get('/bedroom/:id', async(req,res) => {
             return res.status(404).json({code: 404, message:["Bedroom item not found!"]});
         }
         res.status(200).res.json({
+            cat : "bedroom",
             itemId: item._id,
             picture: item.picture.toString('base64'),
             col: item.col,
@@ -151,6 +155,7 @@ bedroomRouter.put('/admin/bedroom/:id',
         }
 
         res.status(200).json({
+            cat : "bedroom",
             code: 200,
             message: ['Bedroom item changed successfully'],
             itemId: item._id,

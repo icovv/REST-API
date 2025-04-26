@@ -18,7 +18,10 @@ decorRouter.get('/decor', async(req,res) => {
     try {
         const items = await Decor.find().lean();
         if(items.length > 0){
-        items.forEach((el) => el.picture.toString("base64"))
+            items.forEach(
+                (el) => {
+                    el.picture.toString("base64")
+                    el.cat = "decor"});
         }
         res.status(200).json({code: 200, items: items});
     } catch (error) {
@@ -35,6 +38,7 @@ decorRouter.get('/decor/:id', async(req,res) => {
             return res.status(404).json({code: 404, message:["Decor item not found!"]});
         }
         res.status(200).res.json({
+            cat : "decor",
             itemId: item._id,
             picture: item.picture.toString('base64'),
             col: item.col,
@@ -153,6 +157,7 @@ decorRouter.put('/admin/decor/:id',
         }
 
         res.status(200).json({
+            cat : "decor",
             code: 200,
             message: ['Decor item changed successfully'],
             itemId: item._id,

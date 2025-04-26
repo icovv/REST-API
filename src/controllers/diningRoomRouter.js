@@ -18,7 +18,10 @@ diningRoomRouter.get('/dining-room', async(req,res) => {
     try {
         const items = await DiningRoom.find().lean();
         if(items.length > 0){
-        items.forEach((el) => el.picture.toString("base64"))
+            items.forEach(
+                (el) => {
+                    el.picture.toString("base64")
+                    el.cat = "decor"});
         }
         res.status(200).json({code: 200, items: items});
     } catch (error) {
@@ -35,6 +38,7 @@ diningRoomRouter.get('/dining-room/:id', async(req,res) => {
             return res.status(404).json({code: 404, message:["Dining room item not found!"]});
         }
         res.status(200).res.json({
+            cat : "dining-room",
             itemId: item._id,
             picture: item.picture.toString('base64'),
             col: item.col,
@@ -152,6 +156,7 @@ diningRoomRouter.put('/admin/dining-room/:id',
         }
 
         res.status(200).json({
+            cat : "dining-room",
             code: 200,
             message: ['Dining room changed successfully'],
             itemId: item._id,
