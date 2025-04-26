@@ -121,11 +121,23 @@ bedroomRouter.put('/admin/bedroom/:id',
     isAdmin(),
     upload.single('image'),
     fileFilter(),
-    body('tittle').trim().isString().withMessage('Please enter valid tittle!').notEmpty().withMessage('Please enter valid tittle!'),
-    body('characteristics').trim().isString().withMessage('Please enter valid characteristics!').notEmpty().withMessage('Please enter valid characteristics!'),
-    body('description').trim().isString().withMessage('Please enter valid characteristics!').notEmpty().withMessage('Please enter valid characteristics!'),
-    body('price').trim().isNumeric().withMessage("Please enter valid price!").notEmpty().withMessage("Please enter valid price!"),
-    body('col').trim().isString().withMessage("Please enter valid collection name!").notEmpty().withMessage("Please enter valid price!"),
+    body('title').trim().custom(value => {
+
+        if(value == ""){
+            throw new Error('Please enter valid title!')
+        };
+
+        return true;
+
+    }),
+    body('price').trim().custom(value => {
+        if (value == "" || !numberValidator(value)){
+            throw new Error("Please enter valid price!")
+        }
+
+        return true;
+
+    }),
     async(req,res) => {
     let {id} = req.params;
     const {tittle,price,description,characteristics,col} = req.body;
