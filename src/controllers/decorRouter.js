@@ -70,11 +70,11 @@ decorRouter.post('/admin/decor',
 
     }),
     async(req,res) => {
-    const {tittle,price,description,characteristics,col} = req.body;
+    const {title,price,description,characteristics,col} = req.body;
     const {originalName, buffer, mimetype} = req.file;
 
     let item = new Decor({
-        tittle,
+        tittle:title,
         col,
         price,
         description,
@@ -93,6 +93,7 @@ decorRouter.post('/admin/decor',
         await item.save();
         res.status(200).json({ code: 200, message: ['Decor item uploaded successfully!'], itemId: item._id });
       } catch (error) {
+        console.log(error);
         res.status(500).json({ code: 500, message: ["An error occured while loading your item!"]});
       }
 

@@ -71,11 +71,11 @@ diningRoomRouter.post('/admin/dining-room',
 
     }),
     async(req,res) => {
-    const {tittle,price,description,characteristics,col} = req.body;
+    const {title,price,description,characteristics,col} = req.body;
     const {originalName, buffer, mimetype} = req.file;
 
     let item = new DiningRoom({
-        tittle,
+        tittle:title,
         col,
         price,
         description,
