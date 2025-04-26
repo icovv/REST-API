@@ -93,7 +93,7 @@ bedroomRouter.post('/admin/bedroom',
             res.status(500).json({ code: 500, message: Object.values(parsedErr.errors)});
         }
         await item.save();
-        res.status(200).json({ code: 200, itemId: item._id, message: ['Bedroom item created successfully!'] });
+        res.status(200).json({ code: 200, itemId: item._id, message: ['Bedroom item uploaded successfully!'] });
       } catch (error) {
         console.log(error);
         res.status(500).json({ code: 500, message: ["An error occured while loading your item!"]});
