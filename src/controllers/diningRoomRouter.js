@@ -89,6 +89,7 @@ diningRoomRouter.post('/admin/dining-room',
         if (isResultValid.errors.length){
             let parsedErr = parseError(error)
             res.status(500).json({ code: 500, message: Object.values(parsedErr.errors)});
+            return;
         }
         await item.save();
         res.status(200).json({ code: 200, message: ['Dining room item uploaded successfully!'], itemId: item._id });
@@ -105,6 +106,7 @@ diningRoomRouter.delete('/admin/dining-room/:id',isUser(),isAdmin(), async(req,r
         const item = await DiningRoom.findByIdAndDelete(id).lean();
         if(!item) {
             res.status(404).json({code:404, message:["Dining room item not found!"]})
+            return;
         }
         res.status(200).json({code:200, message: ['Dining room item deleted successfully!'] });
     } catch (error) {

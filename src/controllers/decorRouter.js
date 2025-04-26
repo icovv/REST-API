@@ -89,6 +89,7 @@ decorRouter.post('/admin/decor',
             console.log("vleznah tuk v resultValid",isResultValid.errors);
             let parsedErr = parseError(error)
             res.status(500).json({ code: 500, message: Object.values(parsedErr.errors)});
+            return;
         }
         await item.save();
         res.status(200).json({ code: 200, message: ['Decor item uploaded successfully!'], itemId: item._id });
@@ -106,6 +107,7 @@ decorRouter.delete('/admin/decor/:id',isUser(),isAdmin(), async(req,res) => {
         const item = await Decor.findByIdAndDelete(id).lean();
         if(!item) {
             res.status(404).json({code:404, message:["Decor item not found!"]})
+            return;
         }
         res.status(200).json({code:200, message: ['Decor item deleted successfully!'] });
     } catch (error) {

@@ -87,6 +87,7 @@ bedroomRouter.post('/admin/bedroom',
             console.log("vleznah tuk v resultValid",isResultValid.errors);
             let parsedErr = parseError(error)
             res.status(500).json({ code: 500, message: Object.values(parsedErr.errors)});
+            return;
         }
         await item.save();
         res.status(200).json({ code: 200, itemId: item._id, message: ['Bedroom item uploaded successfully!'] });
@@ -104,6 +105,7 @@ bedroomRouter.delete('/admin/bedroom/:id',isUser(),isAdmin(), async(req,res) => 
         const item = await Bedroom.findByIdAndDelete(id).lean();
         if(!item) {
             res.status(404).json({code:404, message:["Bedroom item not found!"]})
+            return;
         }
         res.status(200).json({code:200, message: ['Bedroom item deleted successfully!'] });
     } catch (error) {
