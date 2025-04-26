@@ -4,7 +4,8 @@ const multer = require('multer')
 const {Decor} = require('../models/decor')
 const {body,validationResult} = require('express-validator');
 const {fileFilter} = require('../midlewares/fileFilter')
-const {parseError} = require('../utils/errorParser')
+const {parseError} = require('../utils/errorParser');
+const { numberValidator } = require('../utils/numberValidator');
 
 const decorRouter = Router();
 
@@ -85,6 +86,7 @@ decorRouter.post('/admin/decor',
     try {
         const isResultValid = validationResult(req);
         if (isResultValid.errors.length){
+            console.log("vleznah tuk v resultValid",isResultValid.errors);
             let parsedErr = parseError(error)
             res.status(500).json({ code: 500, message: Object.values(parsedErr.errors)});
         }

@@ -5,6 +5,7 @@ const {body,validationResult} = require('express-validator');
 const {fileFilter} = require('../midlewares/fileFilter')
 const {parseError} = require('../utils/errorParser');
 const { DiningRoom } = require('../models/diningRoom');
+const { numberValidator } = require('../utils/numberValidator');
 
 const diningRoomRouter = Router();
 
