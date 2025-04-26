@@ -16,10 +16,6 @@ const upload = multer({storage:storage});
 diningRoomRouter.get('/dining-room', async(req,res) => {
     try {
         const items = await DiningRoom.find().lean();
-        console.log(items, "tuk");
-        if(items.length < 1){
-            return res.status(404).json({code: 404, message:["No Dining room items were found!"]});
-        }
         if(items.length > 0){
         items.forEach((el) => el.picture.toString("base64"))
         }

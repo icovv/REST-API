@@ -16,9 +16,6 @@ const upload = multer({storage:storage});
 decorRouter.get('/decor', async(req,res) => {
     try {
         const items = await Decor.find().lean();
-        if(items.length < 1){
-            return res.status(404).json({code: 404, message:["No Decor items were found!"]});
-        }
         if(items.length > 0){
         items.forEach((el) => el.picture.toString("base64"))
         }
