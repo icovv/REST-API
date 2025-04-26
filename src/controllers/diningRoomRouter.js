@@ -33,11 +33,14 @@ diningRoomRouter.get('/dining-room/:id', async(req,res) => {
     const {id } = req.params;
 
     try {
+        if(!id){
+            return res.status(404).json({code: 404, message:["Please provide an ID!"]});
+        }
         const item = await DiningRoom.findById(id).lean();
         if(!item){
             return res.status(404).json({code: 404, message:["Dining room item not found!"]});
         }
-        res.status(200).res.json({
+        res.status(200).json({
             cat : "dining-room",
             itemId: item._id,
             picture: item.picture.toString('base64'),
@@ -48,6 +51,10 @@ diningRoomRouter.get('/dining-room/:id', async(req,res) => {
             characteristics: item.characteristics,
             contentType: item.contentType});
     } catch (error) {
+        if(error.kind){
+            res.status(404).json({code: 404, message: ["No such item ID in our Database!"]})
+            return;
+        }
         res.status(500).json({ code: 500, message: ['Error fetching Dining room item!']});
     }
 })
@@ -141,8 +148,16 @@ diningRoomRouter.put('/admin/dining-room/:id',
     }),
     async(req,res) => {
     let {id} = req.params;
-    const {tittle,price,description,characteristics,col} = req.body;
-    const {originalName, buffer, mimetype} = req.file;
+    const {title,price,description,characteristics,col} = req.body;
+    let originalName = ""
+    let buffer = ""
+    let mimetype = ""
+
+    if(req.file){
+    originalName = req.file.originalName;
+    buffer = req.file.buffer;
+    mimetype = req.file.mimetype;
+    }
 
     try {
         const isResultValid = validationResult(req);
@@ -150,19 +165,35 @@ diningRoomRouter.put('/admin/dining-room/:id',
             let parsedErr = parseError(error)
             res.status(500).json({ code: 500, message: Object.values(parsedErr.errors)});
         }
-        let item = await DiningRoom.findByIdAndUpdate(
-            id,
-            {
-                tittle:tittle,
-                col:col,
-                price: price,
-                description: description,
-                characteristics: characteristics,
-                picture: buffer,
-                contentType: mimetype
-            },
-            {new: true}
-        ).lean();
+            let item = null
+            if(req.file){
+            item = await DiningRoom.findByIdAndUpdate(
+                    id,
+                    {
+                        tittle:title,
+                        col:col,
+                        price: price,
+                        description: description,
+                        characteristics: characteristics,
+                        picture: buffer,
+                        contentType: mimetype
+                    },
+                    {new: true}
+                ).lean();
+            } else{
+                console.log("vleznah tuka")
+            item = await DiningRoom.findByIdAndUpdate(
+                id,
+                {
+                    tittle:title,
+                    col:col,
+                    price: price,
+                    description: description,
+                    characteristics: characteristics,
+                },
+                {new: true}
+            ).lean();
+            }
         if(!item){
             res.status(404).json({code:404, message:["Dining room item not found!"]})
         }
