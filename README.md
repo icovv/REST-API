@@ -38,12 +38,12 @@ password: 123456 <br>
 * GET http://localhost:3000/bedroom/:id / http://localhost:3000/decor/:id / http://localhost:3000/dining-room/:id <br>
   -> Get certain product from one of the three categories (based on your choice). On successful response you will receive the item as object. Schema will be below for reference. If the request is unsuccessfull you will receive object with message(array with messages/texts) and code(status code). <br>
 * POST http://localhost:3000/admin/bedroom / http://localhost:3000/admin/decor / http://localhost:3000/admin/dining-room <br>
-  -> ONLY FOR ADMIN USER. You can create an item for each of the sections depending on your choice. In order to create the item you need to send the following: tittle, col, price, description, characteristics, picture. If the request is successfull you will receive an object with message (array with messages/texts), status code   
+  -> ONLY FOR ADMIN USER. You can create an item for each of the sections depending on your choice. In order to create the item you need to send at least the following: tittle, price and image. If the request is successfull you will receive an object with message (array with messages/texts), status code   
   and also itemID. <br>
 * DELETE http://localhost:3000/admin/bedroom/:id / http://localhost:3000/admin/decor/:id / http://localhost:3000/admin/dining-room/:id <br>
   -> ONLY FOR ADMIN USER. You will receive an object with code(status code) and message(array with messages/texts) <br>
 * PUT http://localhost:3000/admin/bedroom/:id / http://localhost:3000/admin/decor/:id / http://localhost:3000/admin/dining-room/:id <br>
-  -> ONLY FOR ADMIN USER. You can update an item for each of the sections depending on your choice. In order to update the item you need to send the following: tittle, col, price, description, characteristics, picture. If the request is successfull you will receive an object with message (array with messages/texts), status code   
+  -> ONLY FOR ADMIN USER. You can update an item for each of the sections depending on your choice. In order to update the item you need to send at least the following: tittle, price. If the request is successfull you will receive an object with message (array with messages/texts), status code   
   and also itemID. If the request is not successfull you will receive an object with message (array with messages/texts) and code (status code). <br>
 
 # Schema
